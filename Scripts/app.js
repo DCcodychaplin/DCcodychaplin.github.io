@@ -27,8 +27,6 @@
     let AnotherString = `${AString} the main paragraph!`
     MainParagraph.textContent = AnotherString;
     Article.setAttribute("class", "container");
-
-
     
     // insert element
     MainContent.appendChild(MainParagraph);
