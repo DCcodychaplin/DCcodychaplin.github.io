@@ -11,43 +11,68 @@
     <link rel="stylesheet" href="./Content/app.css">
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container-fluid">
-              <a class="navbar-brand" href="index.html"><i class="fas fa-spider"></i>WEBD6201</a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                  <li class="nav-item">
-                    <a class="nav-link" href="index.html"><i class="fas fa-home"></i> Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="projects.html"><i class="fas fa-project-diagram"></i> Projects</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="services.html"><i class="fas fa-map-signs"></i> Services</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="about.html"><i class="fas fa-info"></i> About Us</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </nav>
-    </header>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html"><i class="fas fa-flask"></i> WEBD6201</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul id="navBar" class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html"><i class="fas fa-home"></i> Home</a>
+            </li>
+            <li class="nav-item">
+              <a id="productsNav" class="nav-link" aria-current="page" href="products.html">
+                <i class="fas fa-project-diagram"></i> Products</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="services.html"><i class="fas fa-briefcase"></i> Services</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html"><i class="fas fa-info-circle"></i> About Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
 
-    <div class="container">
-        <h1>Welcome to Our ICE2 Services Page</h1>
+  <main class="container">
+    <h1>Services</h1>
+    <h5 id="mainParagraph"></h5>
+
+    <div class="text-center pb-5">
+      <div>
+        <img src="./Content/spark.png" width="200">
+        <h5 id="innovation"></h5>
+        <small id="innovationsmall"></small>
+      </div>
+
+      <div>
+        <img src="./Content/develop.png" width="100">
+        <h5 id="develop"></h5>
+        <small id="developsmall"></small>
+      </div>
+
+      <div>
+        <img src="./Content/design.png" width="90">
+        <h5 id="design"></h5>
+        <small id="designsmall"></small>
+      </div>
+      </br>
     </div>
-    
-    <!-- Script Section -->
-    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="./Scripts/app.js"></script>
+  </main>
+
+  <!-- Script Section -->
+  <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="./Scripts/app.js"></script>
 </body>
+
 </html>

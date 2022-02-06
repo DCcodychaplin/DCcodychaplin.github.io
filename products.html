@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Us</title>
+  <title>Projects</title>
   <!-- CSS Section -->
   <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="./node_modules/@fortawesome/fontawesome-free/css/all.min.css">
@@ -18,7 +18,7 @@
       <div class="container-fluid">
         <a class="navbar-brand" href="index.html"><i class="fas fa-flask"></i> WEBD6201</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -27,13 +27,14 @@
               <a class="nav-link" href="index.html"><i class="fas fa-home"></i> Home</a>
             </li>
             <li class="nav-item">
-              <a id="productsNav" class="nav-link" href="products.html"><i class="fas fa-project-diagram"></i> Products</a>
+              <a id="productsNav" class="nav-link active" aria-current="page" href="products.html">
+                <i class="fas fa-project-diagram"></i> Products</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="services.html"><i class="fas fa-briefcase"></i> Services</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="about.html"><i class="fas fa-info-circle"></i> About Us</a>
+              <a class="nav-link" href="about.html"><i class="fas fa-info-circle"></i> About Us</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a>
@@ -45,26 +46,20 @@
   </header>
 
   <main class="container">
-    <h1>About Us</h1>
-    <img src="./Content/durham3.png" alt="Durham College" width="200">
-    <table>
+    <h1>Projects</h1>
+    <table class="table-sm table-borderless">
+      <th>Project 1: Lab 3 - NETD3202</th>
+      <th>Project 2: Final Project - SYSA3204</th>
+      <th>Project 3: Lab 4 - OOP3200</th>
       <tr>
-        <td>
-          <h5 id="mainParagraph"></h5></br>
-          <button id="ProjectButton" class="btn btn-primary">See Our Projects!</button>
-        </td>
-        <td>
-          <img class="p-3 pull-right" src="./Content/CODY.jpg" alt="CodyChaplin" height="300">
-        </td>
-        <td>
-          <img class="p-3" src="./Content/LOGAN.jpg" alt="CodyChaplin" height="300">
-        </td>
+        <td id="project1"></td>
+        <td id="project2"></td>
+        <td id="project3"></td>
       </tr>
       <tr>
-        <td>
-        </td>
-        <td><a class="p-3" href="https://www.linkedin.com/in/codychaplin/">Check out Cody's Linkedin</a></td>
-        <td><a class="p-3" href="https://www.linkedin.com/in/logan-at-morris/">Check out Logan's Linkedin</a> </td>
+        <td><img src="./Content/project1.PNG" alt="Project 1" height="400"></td>
+        <td><img src="./Content/project2.PNG" alt="Project 2" height="400"></td>
+        <td><img src="./Content/project3.PNG" alt="Project 3" height="400"></td>
       </tr>
     </table>
   </main>

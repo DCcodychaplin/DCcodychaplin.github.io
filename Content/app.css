@@ -1,1 +1,10 @@
 /* Manual CSS goes here */
+.index {
+    background-image: url('background.jpg');
+    background-size: 100% 110%;
+    background-attachment: fixed;
+  }
+
+body {
+  background-color: #82c3d8;
+}
