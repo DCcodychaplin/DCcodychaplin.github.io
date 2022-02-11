@@ -1,24 +1,267 @@
-/*
- * Names:
- *     Cody Chaplin - 100557080
- *     Logan Morris - 100795796
- * Date :
- *     04/02/2022
- */
-
+// IIFE - Immediately Invoked Function Expession
+// OR Anonymous self-executing function
 "use strict";
 (function()
 {
-    // adds Start function as event listener to Load event
-    window.addEventListener("load", Start);
+    function DisplayHome()
+    {
+        console.log("Home Page");
 
-    // calls different function based on page title
+        // redirects to about.html on button click
+        document.getElementById("AboutUsButton").addEventListener("click", () =>
+        {
+            location.href = "about.html";
+        });
+        
+        // adds content to page
+        $("main").append(`<p id="MainParagraph" class="mt-3">The is the main paragraph</p>`);
+        $("body").append(`<article class="container"><p id="ArticleParagraph" class="mt-3">This is the article paragraph</p></article>`);
+
+        // creates a contact and logs details to console
+        let cody = new core.Contact("Cody", "12334567890", "cody@sdf.com");
+        console.log(cody.toString());
+    }
+
+    function DisplayAboutPage()
+    {
+        console.log("About Us Page");
+    }
+
+    function DisplayProjectsPage()
+    {
+        console.log("Projects Page");
+    }
+
+    function DisplayServicesPage()
+    {
+        console.log("Services Page");
+    }
+
+    /**
+     * Adds a Contact Object to localStorage
+     * 
+     * @param {string} fullName 
+     * @param {string} contactNumber 
+     * @param {string} emailAddress 
+     */
+    function AddContact(fullName, contactNumber, emailAddress)
+    {
+        // generates unique key and stores serialized contact in localStorage
+        let contact = new core.Contact(fullName, contactNumber, emailAddress);
+            if (contact.serialize())
+            {
+                let key = contact.FullName.substring(0, 1) + Date.now();
+
+                localStorage.setItem(key, contact.serialize());
+            }
+    }
+    /**
+     * Validates an input text field in the form and displays an error in the message area
+     *
+     * @param {string} inputFieldID
+     * @param {RegExp} regex
+     * @param {string} errorMessage
+     */
+    function ValidateField(inputFieldID, regex, errorMessage)
+    {
+        let messageArea = $("#messageArea").hide();
+        
+        $("#" + inputFieldID).on("blur", function()
+        {
+            let inputFieldText = $(this).val();
+            if (!regex.test(inputFieldText))
+            {
+                $(this).trigger("focus").trigger("select");
+                messageArea.show().addClass("alert alert-danger").text(errorMessage);
+            }
+            else
+            {
+                messageArea.removeAttr("class").hide();
+            }
+        });
+    }
+
+    function ContactFormValidation()
+    {
+        // validate using full name regex
+        ValidateField("fullName", /^([A-Z][a-z]{1,3}\.?\s)?([A-Z][a-z]{1,})+([\s|,|-]([A-Z][a-z]{1,}))*$/,
+        "Please enter a valid name");
+    
+        // validate using phone number regex
+        ValidateField("contactNumber", /^(\+\d{1,3}[\s-.])?\(?\d{3}\)?[\s-.]?\d{3}[\s-.]?\d{4}$/,
+            "Please enter a valid contact number");
+
+        // validate using email address regex
+        ValidateField("emailAddress", /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}$/,
+            "Please enter a valid email address");
+    }
+
+    function DisplayContactPage()
+    {
+        console.log("Contact Us Page");
+
+        ContactFormValidation(); // validate input
+
+        // gets references
+        let sendButton = document.getElementById("sendButton");
+        let subscribeCheckbox = document.getElementById("subscribeCheckbox");
+
+        // if subscribeCheckbox is checked, add contact to localStorage
+        sendButton.addEventListener("click", function()
+        {
+            if (subscribeCheckbox.checked)
+            {
+                AddContact(fullName.value, contactNumber.value, emailAddress.value);
+            }
+        });
+    }
+
+    function DisplayContactListPage()
+    {
+        console.log("Contact-List Page");
+
+        if (localStorage.length > 0)
+        {
+            let contactList = document.getElementById("contactList"); // table body
+            let data = ""; // data container
+            let keys = Object.keys(localStorage); // returns string[] of keys
+            let index = 1; // key count
+
+            for (const key of keys)
+            {
+                let contactData = localStorage.getItem(key); // get item associated with key
+
+                // create and deserialize contact
+                let contact = new core.Contact();
+                contact.deserialize(contactData);
+
+                // add html
+                data += `<tr>
+                <th scope="row" class="text-center">${index}</th>
+                <td>${contact.FullName}</td>
+                <td>${contact.ContactNumber}</td>
+                <td>${contact.EmailAddress}</td>
+                <td class="text-center">
+                    <button value="${key}" class="btn btn-primary btn-sm edit"><i class="fas fa-edit fa-sm"></i> Edit</button>
+                </td>
+                <td class="text-center">
+                    <button value="${key}" class="btn btn-danger btn-sm delete"><i class="fas fa-trash-alt fa-sm"></i> Delete</button>
+                </td>
+                </tr>`;
+                
+                index++; // increment counter
+            }
+
+            contactList.innerHTML = data; // add table row
+
+            // redirects to edit.html on button click, stores "add" in hash
+            $("#addButton").on("click", () =>
+            {
+                location.href = "edit.html#add";
+            });
+
+            // redirects to edit.html on button click, stores key in hash
+            $("button.edit").on("click", function()
+            {
+                location.href = "edit.html#" + $(this).val();
+            });
+
+            // removes item associated with key from localStorage and redirects to contact-list.html
+            $("button.delete").on("click", function()
+            {
+                if (confirm("Are you sure?"))
+                {
+                    localStorage.removeItem($(this).val());
+                }
+
+                location.href = "contact-list.html";
+            });
+        }
+    }
+
+    function DisplayEditPage()
+    {
+        ContactFormValidation();
+
+        let page = location.hash.substring(1); // get hashed identifier
+
+        switch(page)
+        {
+            case "add":
+                {
+                    // edits text/html on page
+                    $("main>h1").text("Add Contact");
+                    $("#editButton").html(`<i class="fas fa-plus-circle fe-lg"></i> Add`);
+
+                    // adds contact to localStorage
+                    $("#editButton").on("click", (event) =>
+                    {
+                        event.preventDefault();
+                        AddContact(fullName.value, contactNumber.value, emailAddress.value); // adds contact
+                        location.href = "contact-list.html";
+                    })
+                    
+                    // redirect to contact-list.html
+                    $("#cancelButton").on("click", () =>
+                    {
+                        location.href = "contact-list.html";
+                    })
+                }
+                break;
+            default:
+                {
+                    // creates Contact using deserialized data from localStorage
+                    let contact = new core.Contact();
+                    contact.deserialize(localStorage.getItem(page));
+
+                    // updates values
+                    $("#fullName").val(contact.FullName);
+                    $("#contactNumber").val(contact.ContactNumber);
+                    $("#emailAddress").val(contact.EmailAddress);
+
+                    $("#editButton").on("click", (event) =>
+                    {
+                        event.preventDefault();
+
+                        // sets contact data using html values
+                        contact.FullName = $("#fullName").val();
+                        contact.ContactNumber = $("#contactNumber").val();
+                        contact.EmailAddress = $("#emailAddress").val();
+
+                        localStorage.setItem(page, contact.serialize()); // updates record
+
+                        location.href = "contact-list.html";
+                    });
+
+                    // redirect to contact-list.html
+                    $("#cancelButton").on("click", () =>
+                    {
+                        location.href = "contact-list.html";
+                    })
+                }
+                break;
+        }
+    }
+
+    function DisplayLoginPage()
+    {
+        console.log("Login page");
+    }
+
+    function DisplayRegisterPage()
+    {
+        console.log("Register page");
+    }
+
+    // named function
     function Start()
     {
+        console.log("App Started");
+
         switch(document.title)
         {
             case "Home":
-                DisplayHomePage();
+                DisplayHome();
                 break;
             case "About Us":
                 DisplayAboutPage();
@@ -29,157 +272,25 @@
             case "Services":
                 DisplayServicesPage();
                 break;
+            case "Contact-List":
+                DisplayContactListPage();
+                break;
             case "Contact Us":
                 DisplayContactPage();
+                break;
+            case "Edit":
+                DisplayEditPage();
+                break;
+            case "Login":
+                DisplayLoginPage();
+                break;
+            case "Register":
+                DisplayRegisterPage();
                 break;
         }
     }
 
-    // When Home page loads, text is injected into corresponding elements
-    // and the Contact Us button functionality is added
-    function DisplayHomePage()
-    {
-        UpdateNavBar();
+    // adds Start function as event listener to Load event
+    window.addEventListener("load", Start);
 
-        // text to be injected
-        let content = "Welcome to our website for Lab 1! " +
-        "We provide a variety of services to help you with your development needs!</br>You can " + 
-        "check out our Projects page to see our portfolio, Services page for the services we offer, " +
-        "or our About Us page if you want to meet our team!</br>" +
-        "Click the button below for any inquiries.";
-
-        // finds element on page using ID and sets html text
-        document.getElementById("mainParagraph").innerHTML = content;
-
-        // redirected to contact.html on button click
-        document.getElementById("ContactUsButton").addEventListener("click", () =>
-        {
-            location.href = "contact.html";
-        });
-    }
-
-    // When About Us page loads, text is injected into corresponding elements
-    // and the Project button functionality is added
-    function DisplayAboutPage()
-    {
-        UpdateNavBar();
-        
-        let mainText = "This website was created by Logan Morris and Cody Chaplin. We used a </br>combination of HTML and JavaScript to create this beautiful canvas for </br>";
-        mainText += "our work to be published.</br></br>We attend Durham College and are in our fourth semester. </br>Throughout our programming careers we have obtained the </br>skills ";
-        mainText+= "nessessary to create a website and impliment our own </br>text, pictures and really let our creativity soar.";
-
-        document.getElementById("mainParagraph").innerHTML = mainText;
-
-        document.getElementById("ProjectButton").addEventListener("click", () =>
-        {
-            location.href = "products.html";
-        });
-    }
-
-    // When Projects page loads, text is injected into corresponding elements
-    function DisplayProjectsPage()
-    {
-        UpdateNavBar();
-
-        let project1 = "This was our final lab in NETD3202 that involved WPF.</br>" + 
-        "Considering that WPF has been my favourite tool so far, I would say this was my </br> favourite project. " + 
-        "It was a simple application that allowed users to enter info into a </br> database using a form " +
-        " and also let them view the data in several different tabs.";
-
-        let project2 = "This was our final project in SYSA3204 using Python unit</br>" +
-        "testing and Selenium. It invloved automating the testing</br>of a series of test cases and displaying the " +
-        "results in an</br> HTML format as seen below.";
-
-        let project3 = "This was our last C++ lab in OOP3200 that invloved intermediate " +
-        "object oriented programming concepts such as dynamic memory allocation. This was one of our favourites " +
-        "because it helped us understand how memory is allocated.";
-
-        document.getElementById("project1").innerHTML = project1;
-        document.getElementById("project2").innerHTML = project2;
-        document.getElementById("project3").innerHTML = project3;
-    }
-
-    // When Services page loads, text is injected into corresponding elements
-    function DisplayServicesPage()
-    {
-        UpdateNavBar();
-
-        let subtext = "We provide the best web development services money can buy! </br> We attended Durham college and ensure you ";
-        subtext += "your highest </br> expectations will be blown out of the water!";
-
-        document.getElementById("mainParagraph").innerHTML = subtext;
-        document.getElementById("innovation").innerHTML = "Innovation";
-        document.getElementById("innovationsmall").innerHTML = "We offer new ideas and stratagies <br/>to ensure you have the most <br/>productive and efficient system possible!";
-        document.getElementById("develop").innerHTML = "Development";
-        document.getElementById("developsmall").innerHTML = "We have honed our development skills <br/>over the years to give our customers the <br/>best support, design, and final product <br/>they could ask for.";
-        document.getElementById("design").innerHTML = "Design";
-        document.getElementById("designsmall").innerHTML = "We have honed our development skills <br/>over the years to give our customers the <br/>best support, design, and final product <br/>they could ask for.";
-    }
-
-    // When Contact Us page loads, form functionality is loaded
-    function DisplayContactPage()
-    {
-        UpdateNavBar();
-
-        let sendButton = document.getElementById("sendButton"); // gets reference to send button
-
-        sendButton.addEventListener("click", function(event)
-        {
-            event.preventDefault(); // allow printing to console
-
-            // creates new contact and logs information to console
-            let contact = new Contact(fullName.value, contactNumber.value, emailAddress.value);
-            console.log(contact.toString());
-
-            // after 3 seconds, user is redirected to home page
-            setTimeout(() =>
-            {
-                location.href = "index.html";
-            }, 3000);
-        });
-    }
-
-    // Products link is updated to say Projects and Human Resources link is added to nav bar
-    function UpdateNavBar()
-    {
-        // updates products link
-        document.getElementById("productsNav").innerHTML = "<i class=\"fas fa-project-diagram\"></i> Projects";
-
-        let navBar = document.getElementById("navBar"); // get parent <ul> of nav bar
-
-        // <li> and <a> elements are created
-        let HRli = document.createElement("li");
-        HRli.setAttribute("class", "nav-item");
-        let HRa = document.createElement("a");
-        HRa.setAttribute("class", "nav-link");
-
-        HRa.innerHTML = "<i class=\"fas fa-user-circle\"></i> Human Resources"; // link html is set
-        
-        HRli.appendChild(HRa); // adds <a> as child of <li>
-        navBar.insertBefore(HRli, navBar.childNodes[8]); // adds HR link after About Us link
-
-        AddFooter(); // adds footer to bottom of page
-    }
-
-    // Footer is added to bottom of page
-    function AddFooter()
-    {
-        // creates nav element
-        let nav = document.createElement("nav");
-        nav.setAttribute("class","navbar fixed-bottom navbar-dark bg-dark");
-
-        let date = new Date().getFullYear(); // gets current year
-
-        // creates inner div and sets inner html
-        let div = document.createElement("div");
-        div.setAttribute("class","container-fluid");
-        div.innerHTML = `<a class="navbar-brand" href="#">&copy; CopyRight ${date}</a>`;
-
-        
-        nav.appendChild(div); // adds <div> as child of <nav>
-
-        // gets first script tag at bottom of body and inserts navbar before it
-        let script = document.getElementsByTagName("script")[2];
-        document.body.insertBefore(nav, script);
-    }
 })();
