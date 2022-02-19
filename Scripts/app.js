@@ -289,7 +289,7 @@
     {
         console.log("Login page");
 
-        let messageArea = $("messageArea");
+        let messageArea = $("#messageArea");
         messageArea.hide();
 
         $("#loginButton").on("click", function()
@@ -325,8 +325,8 @@
             else
             {
                 // on fail, trigger focus and select on username field and show error message
-                $("#username").trigger("focus").trigger("select");
                 messageArea.addClass("alert alert-danger").text("Error: Invalid login credentials").show();
+                $("#username").trigger("focus").trigger("select");
             }
             });
         });
