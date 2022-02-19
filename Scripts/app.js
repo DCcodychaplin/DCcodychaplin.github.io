@@ -3,6 +3,42 @@
 "use strict";
 (function()
 {
+    /**
+     * Uses AJAX to return data to callback function
+     *
+     * @param {string} method
+     * @param {string} url
+     * @param {Function} callback
+     */
+    function AjaxRequest(method, url, callback)
+    {
+        // create XHR object and add event listener
+        let XHR = new XMLHttpRequest();
+        XHR.addEventListener("readystatechange", () =>
+        {
+            if (XHR.readyState === 4 && XHR.status === 200)
+            {
+                callback(XHR.responseText);
+            }
+        });
+
+        XHR.open(method, url); // open request
+        XHR.send(); // send request
+    }
+
+    /**
+     * Loads navbar from header file and injects header/html into page
+     *
+     * @param {String} data
+     */
+    function LoadHeader(data)
+    {
+        $("header").html(data);
+        $(`li>a:contains(${document.title})`).addClass("active");
+
+        CheckLogin();
+    }
+
     function DisplayHome()
     {
         console.log("Home Page");
@@ -101,6 +137,12 @@
         console.log("Contact Us Page");
 
         ContactFormValidation(); // validate input
+
+        // only displays button if logged in
+        if (sessionStorage.getItem("user"))
+        {
+            $("#showContactListButton").removeAttr("style");
+        }
 
         // gets references
         let sendButton = document.getElementById("sendButton");
@@ -246,6 +288,74 @@
     function DisplayLoginPage()
     {
         console.log("Login page");
+
+        let messageArea = $("messageArea");
+        messageArea.hide();
+
+        $("#loginButton").on("click", function()
+        {
+            // set success to false by default and create new empty User object
+            let success = false;
+            let newUser = new core.User();
+
+            // get data from JSON file
+            $.get("./Data/users.json", function(data)
+            {
+                // for each user in data
+                for (const user of data.users)
+                {
+                    // if user exists, update newUser, set success to true, and break
+                    if (username.value == user.Username && password.value == user.Password)
+                    {
+                        newUser.fromJSON(user);
+                        success = true;
+                        break;
+                    }
+                }
+
+            // if username and password match, success
+            if (success)
+            {
+                // add user to session storage
+                sessionStorage.setItem("user", newUser.serialize());
+                messageArea.removeAttr("class").hide();
+
+                location.href = "contact-list.html";
+            }
+            else
+            {
+                // on fail, trigger focus and select on username field and show error message
+                $("#username").trigger("focus").trigger("select");
+                messageArea.addClass("alert alert-danger").text("Error: Invalid login credentials").show();
+            }
+            });
+        });
+
+        // on cancel, reset form and redirect to homepage
+        $("cancelButton").on("click", function()
+        {
+            document.forms[0].reset();
+
+            location.href = "index.html";
+        });
+    }
+
+    function CheckLogin()
+    {
+        // if user is logged in
+        if (sessionStorage.getItem("user"))
+        {
+            // update "login" link to "logout"
+            $("#login").html(`<a id="logout" class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>`);
+
+            // on remove, clear (user) from session storage and redirect to login page
+            $("#logout").on("click", function()
+            {
+                sessionStorage.clear();
+
+                location.href = "login.html";
+            });
+        }
     }
 
     function DisplayRegisterPage()
@@ -257,6 +367,8 @@
     function Start()
     {
         console.log("App Started");
+
+        AjaxRequest("GET", "header.html", LoadHeader);
 
         switch(document.title)
         {
