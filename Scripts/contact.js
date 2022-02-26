@@ -1,5 +1,6 @@
 (function(core)
 {
+    "use strict";
     class Contact
     {
         // getters and setters
@@ -39,28 +40,6 @@
             this.FullName = fullName;
             this.ContactNumber = contactNumber;
             this.EmailAddress = emailAddress;
-        }
-
-        // public utility methods
-        serialize()
-        {
-            // if data is not empty, return data in CSV format
-            if (this.fullName !== "" && this.contactNumber !== "" && emailAddress !== "")
-            {
-                return `${this.FullName},${this.ContactNumber},${this.EmailAddress}`;
-            }
-
-            console.error("One or more properties of the contact are missing or invalid");
-            return null;
-        }
-
-        deserialize(data) // assume data in in CSV format
-        {
-            // parameterized data is split into array and used to set properties
-            let propertyArray = data.split(",");
-            this.FullName = propertyArray[0];
-            this.ContactNumber = propertyArray[1];
-            this.EmailAddress = propertyArray[2];
         }
 
         // overridden method

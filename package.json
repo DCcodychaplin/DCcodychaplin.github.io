@@ -1,9 +1,9 @@
 {
-  "name": "ice6",
+  "name": "lab2",
   "version": "1.0.0",
-  "description": "Repo for WEBD6201-ICE6",
+  "description": "Repo for WEBD6201-LAB2",
   "main": "index.html",
-  "author": "Cody Chaplin",
+  "author": "Cody Chaplin, Logan Morris",
   "license": "MIT",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
