@@ -317,12 +317,10 @@
             });
         });
 
-        // on cancel, reset form and redirect to homepage
+        // on cancel, reset form
         $("#cancelButton").on("click", function()
         {
             document.forms[0].reset();
-
-            location.href = "index.html";
         });
     }
 
