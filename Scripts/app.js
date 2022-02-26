@@ -97,9 +97,7 @@
           */
          toString()
          {
-             return `Name: ${this.FirstName} ${this.LastName}
-                     \nEmail Adress: ${this.EmailAddress}
-                     \nUsername: ${this.Username}`;
+             return `Name: ${this.FirstName} ${this.LastName}\nEmail Adress: ${this.EmailAddress}\nUsername: ${this.Username}`;
          }
 
          /**
