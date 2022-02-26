@@ -320,6 +320,7 @@
         // on cancel, reset form
         $("#cancelButton").on("click", function()
         {
+            messageArea.removeAttr("class").hide();
             document.forms[0].reset();
         });
     }
